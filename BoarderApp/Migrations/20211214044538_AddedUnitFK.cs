@@ -13,11 +13,13 @@ namespace BoarderApp.Migrations
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.AddColumn<int>(
-                name: "UnitID",
-                table: "Customers",
-                type: "int",
-                nullable: true);
+       
+
+            migrationBuilder.AddColumn<string>(
+               name: "UnitName",
+               table: "Customers",
+               type: "nvarchar(max)",
+               nullable: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_UnitID",

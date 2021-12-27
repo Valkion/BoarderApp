@@ -1,11 +1,11 @@
 ﻿using BoarderApp.Data;
 using BoarderApp.Models;
+using BoarderApp.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-
-
+using System.Linq;
 
 namespace BoarderApp.Controllers
 {
@@ -26,10 +26,44 @@ namespace BoarderApp.Controllers
             return View(objList);
 
 
-        } 
+        }
+
+        // GET-Create
+        //public IActionResult Create()
+       // {
+            //IEnumerable<SelectListItem> TypeDropDown = _db.ExpenseTypes.Select(i => new SelectListItem
+            //{
+            //    Text = i.Name,
+            //    Value = i.Id.ToString()
+            //});
+
+            //ViewBag.TypeDropDown = TypeDropDown;
+
+        //    UnitVM unitVM = new UnitVM()
+        //    {
+        //        Unit = new Unit(),
+        //        TypeDropDown = _db.ExpenseTypes.Select(i => new SelectListItem
+        //        {
+        //            Text = i.Name,
+        //            Value = i.Id.ToString()
+        //        })
+        //    };
+
+        //    return View(expenseVM);
+       // }
+
 
         public IActionResult Create()
         {
+
+            IEnumerable<SelectListItem> UnitDropDown = _db.Units.Select(i => new SelectListItem
+            {
+                Text = i.UnitName,
+                Value = i.UnitID.ToString(),
+
+            });
+
+            ViewBag.UnitDropDown = UnitDropDown;
             return View();
         }
         //POST
@@ -37,24 +71,21 @@ namespace BoarderApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Customer obj)
         {
-          
-            List<Unit> unitList = new List<Unit>();
-
-            ViewBag.MyUnits = new SelectList(_db.Units,"UnitID", "UnitName");
-           
-
-
-         
-
+      
              DateTime date = DateTime.Parse(DateTime.Now.ToString("MM/dd/yyyy"));
 
             
             obj.Active = true;
             obj.DateCreated = date;
             
-            _db.Customers.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("Index");   
+            if(ModelState.IsValid)
+            {
+                _db.Customers.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+         
+              return View(obj); 
             
         }
     }

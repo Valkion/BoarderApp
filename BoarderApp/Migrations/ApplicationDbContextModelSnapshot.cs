@@ -33,19 +33,21 @@ namespace BoarderApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MacAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Unit")
+                    b.Property<int>("UnitID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UnitID")
-                        .HasColumnType("int");
+                    b.Property<string>("UnitName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerId");
 
@@ -71,11 +73,13 @@ namespace BoarderApp.Migrations
 
             modelBuilder.Entity("BoarderApp.Models.Customer", b =>
                 {
-                    b.HasOne("BoarderApp.Models.Unit", "UnitName")
+                    b.HasOne("BoarderApp.Models.Unit", "Unit")
                         .WithMany()
-                        .HasForeignKey("UnitID");
+                        .HasForeignKey("UnitID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("UnitName");
+                    b.Navigation("Unit");
                 });
 #pragma warning restore 612, 618
         }
